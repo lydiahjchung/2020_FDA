@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>My First Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+</head>
+<body>
+    <div class="form-row text-left">
+        <div class = "col-11 text-left">
+            <h2>Asset Allocation</h2>
+        </div>
+    </div>
+    <hr>
+    <form id="portfolios" action="/post" method="POST">
+        <div>
+            <h3>Select Start Date</h3>
+            <input type="date" name="start" class="start_date" placeholder="Start Date"/>
+            <h3>Select End Date</h3>
+            <input type="date" name="end" class="end_date" placeholder="End Date"/>
+        </div>
+        <br>
+        <hr>
+        <div class="form-row">
+            <button type="button" onclick="add_portfolio()">Add Portfolio</button>
+            <button type="button" onclick="delete_portfolio()">Delete Portfolio</button>
+            <div class="form-row">
+                <ol id="pfo_div" style="list-style: none;">
+
+                </ol>
+            </div>
+        </div>
+        <hr>
+        <input type="submit" value="Run" onclick="input_data_to_array()"/>
+    </form>
+</body>
+<script src="../static/index.js"></script>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -7,86 +7,80 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 </head>
 <body>
-    <form id="myForm" action="/post" method="POST">
-        <div class="form-row text-left">
-            <div class = "col-11 text-left">
-                <h2>Asset Allocation</h2>
-            </div>
+    <div class="form-row text-left">
+        <div class = "col-11 text-left">
+            <h2>Asset Allocation</h2>
         </div>
-        <hr>
+    </div>
+    <hr>
+    <form id="portfolios" action="/post" method="POST">
         <div>
             <h3>Select Start Date</h3>
-            <input type="date" name="start" placeholder="Start Date"/>
+            <input type="date" name="start" class="start_date" placeholder="Start Date"/>
             <h3>Select End Date</h3>
-            <input type="date" name="end" placeholder="End Date"/>
+            <input type="date" name="end" class="end_date" placeholder="End Date"/>
         </div>
         <br>
         <hr>
         <div class="form-row">
-            <div class="form-row">
-                <ol id="pfo_div">
-    
-                </ol>
-            </div>
-            <br>
             <button type="button" onclick="add_portfolio()">Add Portfolio</button>
             <button type="button" onclick="delete_portfolio()">Delete Portfolio</button>
-        </div>
-        <div class="form-row">
-            <table id="myTable" name="skillsTable">
-                <tr>
-                    <th>Ticker</th>
-                    <th>Name</th>
-                    <th>Weight</th>
-                    <th>Leverage</th>
-                </tr>
-            </table>
-            <ol id="asset_div">
+            <div class="form-row">
+                <ol id="pfo_div" style="list-style: none;">
 
-            </ol>
+                </ol>
+            </div>
         </div>
-        <br>
-        <button type="button" onclick="add_asset()">Add Row</button>
-        <button type="button" onclick="delete_asset()">Delete row</button>
         <hr>
-        <input type="submit" value="Run" />
+        <input type="submit" value="Run" onclick="input_data_to_array()"/>
     </form>
 </body>
-<script>
-    function add_portfolio() {
-        var total_pfo = document.getElementsByClassName("pfo");
-        total_pfo = total_pfo.length + 1;
-        pfo_div = document.getElementById("pfo_div");
-        new_in = "<li id='pfo"+total_pfo+"_wrapper' class='pfo'><div class='form-row'><table id='myTable' name='skillsTable'><tr>"+ 
-            "<th>Ticker</th><th>Name</th><th>Weight</th><th>Leverage</th></tr></table>"+ 
-            "<ol id='asset_div"+total_pfo+"'></ol></div><br>"+ 
-            "<button type='button' onclick='add_asset()'>Add Row</button>"+ 
-            "<button type='button' onclick='delete_asset()'>Delete row</button></li>";
-        pfo_div.insertAdjacentHTML('beforeend', new_in);
-        console.log(total_pfo.length)
-    }
-    function delete_portfolio() {
-        var total_pfo = document.getElementsByClassName("pfo");
-        console.log(total_pfo.length)
-        document.getElementById("pfo"+total_pfo.length+"_wrapper").remove();
-    }
-    function add_asset() {
-        var total_asset = document.getElementsByClassName("asset");
-        total_asset = total_asset.length + 1;
-        asset_div = document.getElementById("asset_div");
-        new_input = "<li id='asset"+total_asset+
-        "_wrapper'><input type='text' class='asset' name='asset[]' id='asset"+
-        total_asset+"' placeholder='Ticker'><input type='text' class='weight' name='name[]' id='name"+
-        total_asset+"' placeholder='Asset Name'><input type='text' class='weight' name='weight[]' id='weight"+
-        total_asset+"' placeholder='Weight'><input type='text' class='leverage' name='leverage[]' id='leverage"+
-        total_asset+"' placeholder='Leverage'><br></li>";
-        asset_div.insertAdjacentHTML('beforeend',new_input);
-        console.log(total_asset.length)
-    }
-    function delete_asset() {
-        var total_asset = document.getElementsByClassName("asset");
-        console.log(total_asset.length)
-        document.getElementById("asset"+total_asset.length+"_wrapper").remove();
-    }
-</script>
+<script src="../static/index.js"></script>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>My First Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>    
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+</head>
+<body>
+    <div class="form-row text-left">
+        <div class = "col-11 text-left">
+            <h2>Asset Allocation</h2>
+        </div>
+    </div>
+    <hr>
+    <form id="portfolios" name="portfolios" action="/post" method="POST">
+        <div>
+            <p>Select Start Date</p>
+            <input type="date" name="start" class="start_date" placeholder="Start Date"/>
+            <p>Select End Date</p>
+            <input type="date" name="end" class="end_date" placeholder="End Date"/>
+            <p>Initial Balance</p>
+            <input type="text" name="initial" class="initial" placeholder="Initial Balance"/>
+            <p>Rebalancing Frequency (Month)</p>
+            <input type="text" name="rebalancing" class="rebalancing" placeholder="Rebalancing (Month)"/>
+        </div>
+        <br>
+        <hr>
+        <div class="form-row">
+            <button type="button" onclick="add_portfolio()">Add Portfolio</button>
+            <button type="button" onclick="delete_portfolio()">Delete Portfolio</button>
+            <div class="form-row">
+                <ol id="pfo_div" style="list-style: none;">
+
+                </ol>
+            </div>
+        </div>
+        <hr>
+        <input type="submit" value="Run" id="run_button"/>
+        <!-- <input type="submit" value="Run" onclick="input_data_to_array()"/> -->
+    </form>
+</body>
+
+<script src="../static/index.js" type='text/javascript'></script>
 </html>

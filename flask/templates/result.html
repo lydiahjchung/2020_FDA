@@ -7,16 +7,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 </head>
 <body>
-    <p>Asset Allocation Result</p>
-    <ul>
-      {% for weight in weights %}
-          <li>{{weight}}</li>
-      {% endfor %}
-  </ul>
-  <ul>
-    {% for leverage in leverages %}
-        <li>{{leverage}}</li>
-    {% endfor %}
-</ul>
+  <p>Asset Allocation Result</p>
+  <p>{{ initial | safe}}</p>
+    <!-- {% for table in tables %}
+              {{titles[loop.index]}}
+              {{ table|safe }}
+    {% endfor %} -->
 </body>
 </html>
