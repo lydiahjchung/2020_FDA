@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>My First Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+</head>
+<body>
+    <form id="myForm" action="/post" method="POST">
+        <div class="form-row text-left">
+            <div class = "col-11 text-left">
+                <h2>Asset Allocation</h2>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <h3>Select Start Date</h3>
+            <input type="date" name="start" placeholder="Start Date"/>
+            <h3>Select End Date</h3>
+            <input type="date" name="end" placeholder="End Date"/>
+        </div>
+        <br>
+        <hr>
+        <div class="form-row">
+            <div class="form-row">
+                <ol id="pfo_div">
+    
+                </ol>
+            </div>
+            <br>
+            <button type="button" onclick="add_portfolio()">Add Portfolio</button>
+            <button type="button" onclick="delete_portfolio()">Delete Portfolio</button>
+        </div>
+        <div class="form-row">
+            <table id="myTable" name="skillsTable">
+                <tr>
+                    <th>Ticker</th>
+                    <th>Name</th>
+                    <th>Weight</th>
+                    <th>Leverage</th>
+                </tr>
+            </table>
+            <ol id="asset_div">
+
+            </ol>
+        </div>
+        <br>
+        <button type="button" onclick="add_asset()">Add Row</button>
+        <button type="button" onclick="delete_asset()">Delete row</button>
+        <hr>
+        <input type="submit" value="Run" />
+    </form>
+</body>
+<script>
+    function add_portfolio() {
+        var total_pfo = document.getElementsByClassName("pfo");
+        total_pfo = total_pfo.length + 1;
+        pfo_div = document.getElementById("pfo_div");
+        new_in = "<li id='pfo"+total_pfo+"_wrapper' class='pfo'><div class='form-row'><table id='myTable' name='skillsTable'><tr>"+ 
+            "<th>Ticker</th><th>Name</th><th>Weight</th><th>Leverage</th></tr></table>"+ 
+            "<ol id='asset_div"+total_pfo+"'></ol></div><br>"+ 
+            "<button type='button' onclick='add_asset()'>Add Row</button>"+ 
+            "<button type='button' onclick='delete_asset()'>Delete row</button></li>";
+        pfo_div.insertAdjacentHTML('beforeend', new_in);
+        console.log(total_pfo.length)
+    }
+    function delete_portfolio() {
+        var total_pfo = document.getElementsByClassName("pfo");
+        console.log(total_pfo.length)
+        document.getElementById("pfo"+total_pfo.length+"_wrapper").remove();
+    }
+    function add_asset() {
+        var total_asset = document.getElementsByClassName("asset");
+        total_asset = total_asset.length + 1;
+        asset_div = document.getElementById("asset_div");
+        new_input = "<li id='asset"+total_asset+
+        "_wrapper'><input type='text' class='asset' name='asset[]' id='asset"+
+        total_asset+"' placeholder='Ticker'><input type='text' class='weight' name='name[]' id='name"+
+        total_asset+"' placeholder='Asset Name'><input type='text' class='weight' name='weight[]' id='weight"+
+        total_asset+"' placeholder='Weight'><input type='text' class='leverage' name='leverage[]' id='leverage"+
+        total_asset+"' placeholder='Leverage'><br></li>";
+        asset_div.insertAdjacentHTML('beforeend',new_input);
+        console.log(total_asset.length)
+    }
+    function delete_asset() {
+        var total_asset = document.getElementsByClassName("asset");
+        console.log(total_asset.length)
+        document.getElementById("asset"+total_asset.length+"_wrapper").remove();
+    }
+</script>
+</html>

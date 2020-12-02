@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  server:
+    container_name: flask_test
+    build: .
+    ports:
+      - '5000:5000'
+    environment:
+      - FLASK_ENV=Development
+    volumes:
+      - .:/app

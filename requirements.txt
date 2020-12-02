@@ -1,0 +1,6 @@
+flask
+plotly
+pandas
+numpy
+matplotlib
+pandas_datareader
