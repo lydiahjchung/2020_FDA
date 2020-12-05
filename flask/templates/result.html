@@ -8,22 +8,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 </head>
 <body>
-  <p>Asset Allocation Result</p>
-  <table>
-    {% for key in result%}
-      <tr>
-        <th> {{ key }} </th>
-        <td> {{ result[key] }} </td>
-      </tr>
-    {% endfor %}
-  </table>
+  <h1>Asset Allocation Result</h1>
   <div class="container">
     <div class="row">
       <div class="col-xs-3">
-        <label> Choose the plot type ... </label>
-        <select class="form-control" id="first_cat">
-          <option value="Bar"> Bar </option>
-          <option value="Scatter"> Scatter </option>
+        <label> Choose the plot type </label>
+        <ul>
+          <li> Drawdown ( Linear ) </li>
+          <li> Cumulative Return ( Linear ) </li>
+          <li> Balance ( Log ) </li>
+        </ul>
+        <select class="form-control" id="plotting">
+          <option value="Drawdown"> Drawdown </option>
+          <option value="Cumreturn"> Cum. Return </option>
+          <option value="Balance"> Balance </option>
         </select>
       </div>
     </div>
@@ -38,18 +36,18 @@
   </div>
 </body>
 <script type='text/javascript'>
-  $('#first_cat').on('change', function() {
+  $('#plotting').on('change', function() {
       console.log('selected')
       $.ajax({
-          url: '/bar',
+          url: '/plot',
           type: 'GET',
           contentType: 'application/json;charset=UTF-8',
           data: {
-              'selected': document.getElementById('first_cat').value
+              'selected': document.getElementById('plotting').value
           },
           dataType: 'json',
           success: function(data) {
-              Plotly.newPlot('bargraph', data);
+              Plotly.newPlot('bargraph', data[0], data[1]);
           }
       })
   })
