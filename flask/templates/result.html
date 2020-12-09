@@ -28,8 +28,9 @@
     <div class="col-md-6">
       <div class="chart" id="bargraph">
         <script>
-          var graphs = {{ plot | safe }};
-          Plotly.plot('bargraph', graphs, {});
+          var graph = {{ plot | tojson }};
+          var glayout = {{ layout | tojson}};
+          Plotly.plot('bargraph', graph, glayout);
         </script>
       </div>
     </div>

@@ -18,17 +18,15 @@ class Asset():
     self.date = self.data.index
 
     self.ratio = 0
-    self.leverage = 0
     self.price = None
     self.change = None
 
-  def put_ratio_leverage(self, ratio, leverage):
+  def put_ratio(self, ratio):
     self.ratio = ratio
-    self.leverage = leverage
 
   def put_price_change(self):
     self.price = self.data['Adj Close']
-    self.change = np.multiply(self.price.pct_change().to_list(), [100 * self.leverage])
+    self.change = self.price.pct_change().to_list()
 
   def get_date(self):
     return self.date
@@ -41,7 +39,7 @@ class Asset():
 
 
 class Portfolio():
-  def __init__(self, name, assets, ratios, leverages, initial_balance, rebalancing_interval):
+  def __init__(self, name, assets, ratios, initial_balance, rebalancing_interval):
     self.name = name
     
     # list of class asset elements
@@ -54,10 +52,9 @@ class Portfolio():
     self.date = dates[0]
 
     self.ratios = [each / sum(ratios) for each in ratios]
-    self.leverages = leverages
 
     for i in range(len(self.assets)):
-      self.assets[i].put_ratio_leverage(self.ratios[i], self.leverages[i])
+      self.assets[i].put_ratio(self.ratios[i])
       self.assets[i].put_price_change()
 
     self.initial_balance = initial_balance  
@@ -239,7 +236,7 @@ class Portfolio():
       name = self.assets[i].get_name()
       percentage = int(self.ratios[i] * 100)
 
-      detail += f'{name} ({percentage}%, {self.leverages[i]}x) '
+      detail += f'{name} ({percentage}%) '
 
     self.summary = [detail, self.backtest_result_df['Total Balance'][0], self.backtest_result_df['Total Balance'][-1],
                     str(round(self.backtest_result_df['Total CAGR'][-1], 2))+'%', str(round(self.backtest_result_df['Total MDD'][-1], 2))+'%',

@@ -29,6 +29,12 @@ def create_plot(feature, portfolio):
         
         layout = go.Layout(
             title = 'Portfolio Drawdown Comparison',
+            xaxis = dict(
+                title = 'Date'
+            ),
+            yaxis = dict(
+                title = 'Drawdown'
+            )
         )
     
     elif feature == 'Cumreturn':
@@ -45,23 +51,40 @@ def create_plot(feature, portfolio):
                 )
             )
         
-        layout = {}
+        layout = go.Layout(
+            title = 'Portfolio Cumulative Return Comparison',
+            xaxis = dict(
+                title = 'Date'
+            ),
+            yaxis = dict(
+                title = 'Cumulative Return'
+            )
+        )
 
     else: # Balance
-        X = [[0,1,2], [0,1,2]]
-        Y = [[3,6,9], [8,6,4]]
-        
         data = []
-        for i in range(len(X)):
+        for i in range(len(portfolio)):
+            date = portfolio[i].get_date()
+            result = portfolio[i].get_backtest_result()
             data.append(
                 go.Scatter(
-                    x = X[i], 
-                    y = Y[i],
-                    mode='lines'
+                    x = date, 
+                    y = result.loc[:, 'Total Balance'],
+                    mode = 'lines',
+                    name = portfolio[i].get_name(),
                 )
             )
-
-        layout = {}
+        
+        layout = go.Layout(
+            title = 'Portfolio Balance Comparison',
+            xaxis = dict(
+                title = 'Date'
+            ),
+            yaxis = dict(
+                title = 'Balance',
+                type = 'log'
+            )
+        )
 
     entire = [data, layout]
     graphJSON = json.dumps(entire, cls=plotly.utils.PlotlyJSONEncoder)
@@ -100,15 +123,16 @@ def post():
         for i in range(len(data['tickers'])):
             assets.append(Asset(data['tickers'][i], data['names'][i], start, end))
         
-        temp = Portfolio(name, assets, data['weights'], data['leverages'], initial, rebalancing)
+        temp = Portfolio(name, assets, data['weights'], initial, rebalancing)
         temp.backtest()
         temp.backtest_result()
         portfolio.append(temp)
 
     feature='Drawdown'
     bar = create_plot(feature, portfolio)
+    bar = json.loads(bar)
 
-    return render_template('result.html', result=pfos, plot=bar)
+    return render_template('result.html', plot=bar[0], layout=bar[1])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000', debug=True)

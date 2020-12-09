@@ -16,12 +16,10 @@ def get_pfo_info(data):
     ticker = [get_value(data[i]) for i in find_all(data, "asset_ticker")]
     name = [get_value(data[i]) for i in find_all(data, "asset_name")]
     weight = [float(get_value(data[i])) for i in find_all(data, "asset_weight")]
-    leverage = [int(get_value(data[i])) for i in find_all(data, "asset_leverage")]
     
     pfo['tickers'] = ticker
     pfo['names'] = name
     pfo['weights'] = weight
-    pfo['leverages'] = leverage
     
     return pfo
 

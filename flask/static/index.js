@@ -12,7 +12,6 @@ function getPortfolioHTML(pfo_idx) {
                     <input type="text" class="asset asset_ticker" name="asset_ticker" placeholder="Ticker"/>
                     <input type="text" class="asset asset_name" name="asset_name" placeholder="Asset Name"/>
                     <input type="text" class="asset asset_weight" name="asset_weight" placeholder="Weight"/>
-                    <input type="text" class="asset asset_leverage" name="asset_leverage" placeholder="Leverage"/>
                 </li>
             </ol>
         </li>
@@ -25,7 +24,6 @@ function getAssetHTML() {
             <input type="text" class="asset asset_ticker" name="asset_ticker" placeholder="Ticker"/>
             <input type="text" class="asset asset_name" name="asset_name" placeholder="Asset Name"/>
             <input type="text" class="asset asset_weight" name="asset_weight" placeholder="Weight"/>
-            <input type="text" class="asset asset_leverage" name="asset_leverage" placeholder="Leverage"/>
         </li>
     `;
 }
