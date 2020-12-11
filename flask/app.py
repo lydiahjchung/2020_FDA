@@ -93,7 +93,18 @@ def create_plot(feature, portfolio):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('main.html')
+
+@app.route('/check', methods=['POST'])
+def checkbox_value():
+    nominal = request.form.getlist('nominal_bonds')
+    global_bonds = request.form.getlist('global_bonds')
+    corporate = request.form.getlist('corporate')
+    global_equities = request.form.getlist('global_equities')
+    emd_spreads = request.form.getlist('emd_spreads')
+    commodities = request.form.getlist('commodities')
+    print(nominal, global_bonds, corporate, global_equities, emd_spreads, commodities, file=sys.stderr)
+    return "Submitted!"
 
 @app.route('/plot', methods=['GET', 'POST'])
 def change_features():

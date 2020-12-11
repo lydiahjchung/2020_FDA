@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>    
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <style>
+        nav {
+            width: 25%;
+            float: left;
+        }
+        section {
+            width: 75%;
+            text-align: left;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-row text-left">
+        <div class = "col-11 text-left">
+            <h2>2020 FDA Team Project</h2>
+        </div>
+    </div>
+    <hr>
+    <form method='POST' action='/check'>
+        <div>
+            <nav>
+                <p>Select Start Date<br/>( Start date should be after Jan. 29th, 2008 )</p>
+                <input type="date" name="start" class="start_date" placeholder="Start Date"/>
+                <p>Select End Date</p>
+                <input type="date" name="end" class="end_date" placeholder="End Date"/>
+                <p>Initial Balance</p>
+                <input type="text" name="initial" class="initial" placeholder="Initial Balance"/>
+                <p>Rebalancing Frequency (Month)</p>
+                <input type="text" name="rebalancing" class="rebalancing" placeholder="Rebalancing (Month)"/>
+            </nav>
+            <section>
+                <div style="height: 170px;">
+                    <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
+                        <p style="font-weight: bold">Global Nominal Bonds</p>
+                        <input type='checkbox' name='nominal_bonds' value='0P00009UMU.T'> Japan<br>
+                        <input type='checkbox' name='nominal_bonds' value='0P0000KM26.L'> UK<br>
+                        <input type='checkbox' name='nominal_bonds' value='TLT'> US<br>
+                        <input type='checkbox' name='nominal_bonds' value='0P0000SCQD.F'> Europe
+                    </div>
+                    <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
+                        <p style="font-weight: bold">Global Inflation-Linked Bonds</p>
+                        <input type='checkbox' name='global_bonds' value='TIPS' checked> US
+                    </div>
+                    <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
+                        <p style="font-weight: bold">US Corporate Debt Spreads</p>
+                        <input type='checkbox' name='corporate' value='LQD' checked> US
+                    </div>
+                </div>
+                <div style="height: 170px;">
+                    <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
+                        <p style="font-weight: bold">Global Equities</p>
+                        <input type='checkbox' name='gloabl_equities' value='VTI'> All<br>
+                        <input type='checkbox' name='gloabl_equities' value='WFSPX'> US<br>
+                        <input type='checkbox' name='gloabl_equities' value='069500.KS'> Korea<br>
+                        <input type='checkbox' name='gloabl_equities' value='FEZ'> Europe
+                    </div>
+                    <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
+                        <p style="font-weight: bold">EMD Spreads</p>
+                        <input type='checkbox' name='emd_spreads' value='EMB'> All<br>
+                        <input type='checkbox' name='emd_spreads' value='ILF'> Latin America<br>
+                        <input type='checkbox' name='emd_spreads' value='EWZ'> Brazil
+                    </div>
+                    <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
+                        <p style="font-weight: bold">Commodities</p>
+                        <input type='checkbox' name='commodities' value='DBC'> All<br>
+                        <input type='checkbox' name='commodities' value='IAU'> Gold<br>
+                        <input type='checkbox' name='commodities' value='DBA'> Agriculture<br>
+                        <input type='checkbox' name='commodities' value='USO'> Oil<br>
+                        <input type='checkbox' name='commodities' value='DBB'> Metals
+                    </div>
+                </div>
+            </section>
+            <br>
+            <hr>
+            <br>
+            <input type='submit'>
+        </div>
+    </form>
+</body>
+</html>
