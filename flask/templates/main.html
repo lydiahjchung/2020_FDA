@@ -36,15 +36,17 @@
                 <input type="text" name="initial" class="initial" placeholder="Initial Balance"/>
                 <p>Rebalancing Frequency (Month)</p>
                 <input type="text" name="rebalancing" class="rebalancing" placeholder="Rebalancing (Month)"/>
+                <p>Lookback (Month)</p>
+                <input type="text" name="lookback" class="lookback" placeholder="Lookback (Month)"/>
             </nav>
             <section>
-                <div style="height: 170px;">
+                <div style="height: 200px;">
                     <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
                         <p style="font-weight: bold">Global Nominal Bonds</p>
-                        <input type='checkbox' name='nominal_bonds' value='0P00009UMU.T'> Japan<br>
-                        <input type='checkbox' name='nominal_bonds' value='0P0000KM26.L'> UK<br>
-                        <input type='checkbox' name='nominal_bonds' value='TLT'> US<br>
-                        <input type='checkbox' name='nominal_bonds' value='0P0000SCQD.F'> Europe
+                        <input type='checkbox' name='nominal_bonds' value='SHY'> 1Y+ Short<br>
+                        <input type='checkbox' name='nominal_bonds' value='TLH'> 10Y+ Medium<br>
+                        <input type='checkbox' name='nominal_bonds' value='TLT'> 20Y+ Long<br>
+                        <input type='checkbox' name='nominal_bonds' value='EDV'> 30Y+ Long
                     </div>
                     <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
                         <p style="font-weight: bold">Global Inflation-Linked Bonds</p>
@@ -55,13 +57,13 @@
                         <input type='checkbox' name='corporate' value='LQD' checked> US
                     </div>
                 </div>
-                <div style="height: 170px;">
+                <div style="height: 200px;">
                     <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
                         <p style="font-weight: bold">Global Equities</p>
-                        <input type='checkbox' name='gloabl_equities' value='VTI'> All<br>
-                        <input type='checkbox' name='gloabl_equities' value='WFSPX'> US<br>
-                        <input type='checkbox' name='gloabl_equities' value='069500.KS'> Korea<br>
-                        <input type='checkbox' name='gloabl_equities' value='FEZ'> Europe
+                        <input type='checkbox' name='global_equities' value='VTI'> All<br>
+                        <input type='checkbox' name='global_equities' value='WFSPX'> US<br>
+                        <input type='checkbox' name='global_equities' value='EWJ'> Japan<br>
+                        <input type='checkbox' name='global_equities' value='FEZ'> Europe
                     </div>
                     <div style="float: left; width: 30%; height: 160px; border: 2px solid black; padding-bottom: 10px; padding-left: 5px; margin: 5px">
                         <p style="font-weight: bold">EMD Spreads</p>

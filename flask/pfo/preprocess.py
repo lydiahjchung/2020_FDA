@@ -34,3 +34,21 @@ def save_pfos(data, idx):
             result[get_value(temp[0])] = get_pfo_info(temp)
     
     return result
+
+def alloc_6040(tic):
+    assets, ratios = [], []
+
+    bond = tic[0] # 4
+    fund = tic[3] # 6
+
+    bond_len = len(bond)
+    for i in range(bond_len):
+        assets.append(bond[i])
+        ratios.append(4 / bond_len)
+
+    fund_len = len(fund)
+    for i in range(fund_len):
+        assets.append(fund[i])
+        ratios.append(6 / fund_len)
+
+    return assets, ratios

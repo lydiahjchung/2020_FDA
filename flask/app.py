@@ -4,13 +4,14 @@ import plotly
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
-from pfo.preprocess import find_all, get_value, save_pfos
-from pfo.allocation import Asset, Portfolio
+from pfo.preprocess import find_all, get_value, save_pfos, alloc_6040
+from pfo.allocation import Asset, Portfolio_6040
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
 portfolio = []
+comparisons = []
 
 def create_plot(feature, portfolio):
     if feature == 'Drawdown':
@@ -42,10 +43,11 @@ def create_plot(feature, portfolio):
         for i in range(len(portfolio)):
             date = portfolio[i].get_date()
             result = portfolio[i].get_backtest_result()
+            print(result.loc[:, 'Total Cumulative Return'], file=sys.stderr)
             data.append(
                 go.Scatter(
                     x = date, 
-                    y = result.loc[:, 'Total Cum. Return'],
+                    y = result.loc[:, 'Total Cumulative Return'],
                     mode = 'lines',
                     name = portfolio[i].get_name()
                 )
@@ -61,7 +63,7 @@ def create_plot(feature, portfolio):
             )
         )
 
-    else: # Balance
+    elif feature == 'Balance': 
         data = []
         for i in range(len(portfolio)):
             date = portfolio[i].get_date()
@@ -86,6 +88,54 @@ def create_plot(feature, portfolio):
             )
         )
 
+    elif feature == 'Monthly':
+        data = []
+        for i in range(len(portfolio)):
+            date = portfolio[i].get_date()
+            result = portfolio[i].get_monthly_result()
+            data.append(
+                go.Bar(
+                    x = date, 
+                    y = result.loc[:, 'Total Monthly Return'],
+                    name = portfolio[i].get_name(),
+                )
+            )
+
+        layout = go.Layout(
+            title = 'Portfolio Monthly Return Comparison',
+            xaxis = dict(
+                title = 'Date'
+            ),
+            yaxis = dict(
+                title = 'Return',
+                type = 'linear'
+            )
+        )
+
+    else: # Annual
+        data = []
+        for i in range(len(portfolio)):
+            date = portfolio[i].get_date()
+            result = portfolio[i].get_annual_result()
+            data.append(
+                go.Bar(
+                    x = date, 
+                    y = result.loc[:, 'Total Annual Return'],
+                    name = portfolio[i].get_name(),
+                )
+            )
+
+        layout = go.Layout(
+            title = 'Portfolio Annual Return Comparison',
+            xaxis = dict(
+                title = 'Date'
+            ),
+            yaxis = dict(
+                title = 'Return',
+                type = 'linear'
+            )
+        )
+
     entire = [data, layout]
     graphJSON = json.dumps(entire, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -103,15 +153,32 @@ def checkbox_value():
     global_equities = request.form.getlist('global_equities')
     emd_spreads = request.form.getlist('emd_spreads')
     commodities = request.form.getlist('commodities')
-    print(nominal, global_bonds, corporate, global_equities, emd_spreads, commodities, file=sys.stderr)
-    return "Submitted!"
+    
+    tickers = [nominal, global_bonds, corporate, global_equities, emd_spreads, commodities]
+    start = request.form.get('start')
+    end = request.form.get('end')
+    initial = int(request.form.get('initial'))
+    rebalancing = int(request.form.get('rebalancing'))
+    lookback = int(request.form.get('lookback'))
+
+    # total = [tickers, start, end, initial, rebalancing, lookback]
+
+    asset_6040, ratio_6040 = alloc_6040(tickers)
+    pfo_6040 = Portfolio_6040('60/40', [Asset(each, '', start, end) for each in asset_6040], ratio_6040, initial, rebalancing)
+    comparisons.append(pfo_6040)
+
+    feature = 'Drawdown'
+    bar = create_plot(feature, comparisons)
+    bar = json.loads(bar)
+    
+    return render_template('result.html', plot=bar[0], layout=bar[1])
 
 @app.route('/plot', methods=['GET', 'POST'])
 def change_features():
     print('working', file=sys.stderr)
     feature = request.args['selected']
-    print("check", portfolio, file=sys.stderr)
-    graphJSON = create_plot(feature, portfolio)
+    print("check", comparisons, file=sys.stderr)
+    graphJSON = create_plot(feature, comparisons)
     return graphJSON
 
 @app.route('/post', methods=['POST'])
