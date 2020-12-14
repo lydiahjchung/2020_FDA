@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
 from pfo.preprocess import find_all, get_value, save_pfos, alloc_6040
-from pfo.allocation import Asset, Portfolio_6040
+from pfo.allocation import Asset, GMV_Asset, Portfolio, AWF_Asset
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
@@ -112,29 +112,29 @@ def create_plot(feature, portfolio):
             )
         )
 
-    else: # Annual
-        data = []
-        for i in range(len(portfolio)):
-            date = portfolio[i].get_date()
-            result = portfolio[i].get_annual_result()
-            data.append(
-                go.Bar(
-                    x = date, 
-                    y = result.loc[:, 'Total Annual Return'],
-                    name = portfolio[i].get_name(),
-                )
-            )
+    # else: # Annual
+    #     data = []
+    #     for i in range(len(portfolio)):
+    #         date = portfolio[i].get_date()
+    #         result = portfolio[i].get_annual_result()
+    #         data.append(
+    #             go.Bar(
+    #                 x = date, 
+    #                 y = result.loc[:, 'Total Annual Return'],
+    #                 name = portfolio[i].get_name(),
+    #             )
+    #         )
 
-        layout = go.Layout(
-            title = 'Portfolio Annual Return Comparison',
-            xaxis = dict(
-                title = 'Date'
-            ),
-            yaxis = dict(
-                title = 'Return',
-                type = 'linear'
-            )
-        )
+    #     layout = go.Layout(
+    #         title = 'Portfolio Annual Return Comparison',
+    #         xaxis = dict(
+    #             title = 'Date'
+    #         ),
+    #         yaxis = dict(
+    #             title = 'Return',
+    #             type = 'linear'
+    #         )
+    #     )
 
     entire = [data, layout]
     graphJSON = json.dumps(entire, cls=plotly.utils.PlotlyJSONEncoder)
@@ -163,9 +163,24 @@ def checkbox_value():
 
     # total = [tickers, start, end, initial, rebalancing, lookback]
 
+    # GMV Portfolio
+    gmv_asset = GMV_Asset([tick for cat in tickers for tick in cat], start, end)
+    gmv_asset.create_df()
+    gmv_init_weight = [1/len(gmv_asset.asset_list) for i in range(len(gmv_asset.asset_list))]
+    gmv_portfolio = Portfolio('GMV', gmv_asset.asset_list, gmv_init_weight, initial, rebalancing, lookback, tickers)
+    comparisons.append(gmv_portfolio)
+
+    # 60/40 Portfolio
     asset_6040, ratio_6040 = alloc_6040(tickers)
-    pfo_6040 = Portfolio_6040('60/40', [Asset(each, '', start, end) for each in asset_6040], ratio_6040, initial, rebalancing)
+    pfo_6040 = Portfolio('60/40', [Asset(each, '', start, end) for each in asset_6040], ratio_6040, initial, rebalancing, lookback, tickers)
     comparisons.append(pfo_6040)
+
+    # All Weather Portfolio
+    awf_asset = AWF_Asset(tickers[0], tickers[1], tickers[2], tickers[3], tickers[4], tickers[5], start, end)
+    awf_asset.create_dict()
+    awf_init_weight = [1/len(awf_asset.asset_list) for i in range(len(awf_asset.asset_list))]
+    awf_portfolio = Portfolio('All Weather', awf_asset.asset_list, awf_init_weight, initial, rebalancing, lookback, tickers)
+    comparisons.append(awf_portfolio)
 
     feature = 'Drawdown'
     bar = create_plot(feature, comparisons)
